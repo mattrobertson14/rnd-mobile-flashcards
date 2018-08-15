@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { pluralize } from '../utils/helpers'
+import Button from './Button'
 
 class Deck extends Component {
 
@@ -14,12 +15,15 @@ class Deck extends Component {
   }
 
   render(){
-    let { deck } = this.props.navigation.state.params
+    let { navigation } = this.props
+    let { deck } = navigation.state.params
 
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={styles.cardCount}>{deck.questions.length} cards</Text>
+        <Button onPress={() => navigation.navigate('NewCard', { deckId : deck.key })}>Add Card</Button>
+        <Button onPress={() => alert('Time for a quiz!')}>Start Quiz</Button>
       </View>
     )
   }

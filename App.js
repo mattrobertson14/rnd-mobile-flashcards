@@ -11,6 +11,7 @@ import { Constants } from 'expo'
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import Deck from './components/Deck'
+import NewCard from './components/NewCard'
 
 const MyStatusBar = () => {
   if (Platform.OS === 'ios'){
@@ -41,7 +42,7 @@ const routeConfig = {
       tabBarLabel: 'New Deck',
       tabBarIcon: () => <FontAwesome name='plus-square' size={30} color='#006CCB' />
     },
-  },
+  }
 }
 
 const navConfig = {
@@ -79,6 +80,16 @@ const MainNavigator = createStackNavigator({
       headerTintColor: '#fff',
       headerStyle: {
         backgroundColor: '#0087FF',
+      }
+    }
+  },
+  NewCard: {
+    screen: NewCard,
+    navigationOptions: {
+      title: 'New Card',
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: '#0087FF'
       }
     }
   }
