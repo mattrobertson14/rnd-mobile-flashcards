@@ -21,9 +21,9 @@ class Deck extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{deck.title}</Text>
-        <Text style={styles.cardCount}>{deck.questions.length} cards</Text>
+        <Text style={styles.cardCount}>{deck.questions.length} {pluralize('card', deck.questions.length)}</Text>
         <Button onPress={() => navigation.navigate('NewCard', { deckId : deck.key })}>Add Card</Button>
-        <Button onPress={() => alert('Time for a quiz!')}>Start Quiz</Button>
+        <Button onPress={() => navigation.navigate('Quiz', { deck : deck })}>Start Quiz</Button>
       </View>
     )
   }

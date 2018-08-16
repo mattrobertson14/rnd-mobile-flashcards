@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 import List from './List';
 import { AppLoading } from 'expo'
 
@@ -83,9 +83,11 @@ class DeckList extends Component {
 
     return (
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Current Decks</Text>
-        </View>
+        <Text
+          style={styles.title}
+        >
+          Current Decks
+        </Text>
         {!loading?
           <List items={decks} navigation={this.props.navigation} />
         :
@@ -99,14 +101,19 @@ class DeckList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 25,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    shadowColor: 'transparent',
+    shadowRadius: 0,
+    paddingTop: 25
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    paddingLeft: 25
-  }
+    paddingLeft: 25,
+    backgroundColor: '#fff',
+    paddingTop: 10,
+    paddingBottom: 10
+  },
 });
 
 export default DeckList

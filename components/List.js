@@ -44,8 +44,8 @@ class List extends Component {
 const styles = StyleSheet.create({
   container: {
     flex : 1,
-    marginTop: 30,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    marginTop: 25
   },
   listItem: {
     paddingTop: 25,

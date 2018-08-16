@@ -12,12 +12,13 @@ import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
 import Deck from './components/Deck'
 import NewCard from './components/NewCard'
+import Quiz from './components/Quiz'
 
 const MyStatusBar = () => {
   if (Platform.OS === 'ios'){
     return (
-      <View style={{ backgroundColor: '#fff', height: Constants.statusBarHeight }}>
-        <StatusBar translucent backgroundColor={'#fff'}  barStyle='dark-content' />
+      <View style={{ backgroundColor: '#00437E', height: Constants.statusBarHeight }}>
+        <StatusBar translucent backgroundColor={'#fff'}  barStyle='light-content' />
       </View>
     )
   }
@@ -33,14 +34,14 @@ const routeConfig = {
     screen: DeckList,
     navigationOptions: {
       tabBarLabel: 'Deck List',
-      tabBarIcon: () => <FontAwesome name='list' size={30} color='#006CCB' />
+      tabBarIcon: () => <FontAwesome name='list' size={30} color='#00437E' />
     },
   },
   NewDeck: {
     screen: NewDeck,
     navigationOptions: {
       tabBarLabel: 'New Deck',
-      tabBarIcon: () => <FontAwesome name='plus-square' size={30} color='#006CCB' />
+      tabBarIcon: () => <FontAwesome name='plus-square' size={30} color='#00437E' />
     },
   }
 }
@@ -53,7 +54,7 @@ const navConfig = {
     activeTintColor: Platform.OS === 'ios' ? '#00437E' : '#fff',
     style: {
       height: 56,
-      backgroundColor: Platform.OS === 'ios' ? '#fff' : '#0087FF',
+      backgroundColor: Platform.OS === 'ios' ? '#fff' : '#0064BD',
       shadowColor: 'rgba(0, 0, 0, 0.24)',
       shadowOffset: {
         width: 0,
@@ -79,7 +80,7 @@ const MainNavigator = createStackNavigator({
     navigationOptions: {
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#0087FF',
+        backgroundColor: '#0064BD',
       }
     }
   },
@@ -89,7 +90,17 @@ const MainNavigator = createStackNavigator({
       title: 'New Card',
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#0087FF'
+        backgroundColor: '#0064BD'
+      }
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      title: 'Quiz',
+      headerTintColor: '#fff',
+      headerStyle: {
+        backgroundColor: '#0064BD'
       }
     }
   }
@@ -99,7 +110,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <View style={{flex : 1 }}>
+      <View style={{flex : 1}}>
         <MyStatusBar />
         <MainNavigator />
       </View>
