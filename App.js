@@ -80,7 +80,7 @@ const MainNavigator = createStackNavigator({
     navigationOptions: {
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#0064BD',
+        backgroundColor: '#00437E',
       }
     }
   },
@@ -90,7 +90,7 @@ const MainNavigator = createStackNavigator({
       title: 'New Card',
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#0064BD'
+        backgroundColor: '#00437E'
       }
     }
   },
@@ -100,7 +100,7 @@ const MainNavigator = createStackNavigator({
       title: 'Quiz',
       headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#0064BD'
+        backgroundColor: '#00437E'
       }
     }
   }

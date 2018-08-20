@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { Animated, View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 import Button from './Button'
 
 const QUESTION = 'QUESTION'
@@ -9,31 +9,82 @@ class Card extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      view: QUESTION
-    }
+    this.animatedVal = new Animated.Value(0)
+    this.val = 0
+    this.animatedVal.addListener(({ value }) => {
+      this.value = value
+    })
     this.flipCard = this.flipCard.bind(this)
+
+    this.state = {
+      flipView: ANSWER
+    }
   }
 
   flipCard(){
-    if (this.state.view === QUESTION) this.setState({ view : ANSWER })
-    if (this.state.view === ANSWER) this.setState({ view: QUESTION })
+    if (this.value >= 90){
+      Animated.spring(this.animatedVal, {
+        toValue: 0,
+        tension: 8,
+        friction: 6
+      }).start()
+      this.setState({ flipView: ANSWER })
+    } else {
+      Animated.spring(this.animatedVal, {
+        toValue: 180,
+        tension: 8,
+        friction: 6
+      }).start()
+      this.setState({ flipView: QUESTION })
+    }
   }
 
   render(){
     const { question, answer } = this.props
-    const { view } = this.state
+    const { flipView } = this.state
+
+    const frontAnimate = {
+      transform: [
+        { rotateY: this.animatedVal.interpolate({
+          inputRange: [0,180],
+          outputRange: ['0deg', '180deg']
+        })}
+      ],
+      opacity: this.animatedVal.interpolate({
+        inputRange: [89,90],
+        outputRange: [1, 0]
+      })
+    }
+
+    const backAnimate = {
+      transform: [
+        { rotateY: this.animatedVal.interpolate({
+          inputRange: [0,180],
+          outputRange: ['180deg', '0deg']
+        })}
+      ],
+      opacity: this.animatedVal.interpolate({
+        inputRange: [89,90],
+        outputRange: [0, 1]
+      })
+    }
 
     return (
-      <TouchableWithoutFeedback onPress={() => this.flipCard()}>
-        <View style={styles.container}>
-          {view === QUESTION?
-            <Text>{question}</Text>
-            :
-            <Text>{answer}</Text>
-          }
+      <View style={styles.container}>
+        <View>
+          <Animated.View style={[styles.card, frontAnimate]}>
+            <View>
+              <Text>{question}</Text>
+            </View>
+          </Animated.View>
+          <Animated.View style={[styles.card, styles.back, backAnimate]}>
+            <View>
+              <Text>{answer}</Text>
+            </View>
+          </Animated.View>
         </View>
-      </TouchableWithoutFeedback>
+        <Button onPress={() => this.flipCard()}>FLIP FOR {flipView}</Button>
+      </View>
     );
   }
 }
@@ -41,8 +92,14 @@ class Card extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignSelf: 'stretch',
-    margin: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    height: 325,
+    width: 324,
+    padding: 30,
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: 'black',
@@ -52,8 +109,12 @@ const styles = StyleSheet.create({
       height: 2
     },
     shadowRadius: 4,
-    backgroundColor: '#fff',
-    elevation: 4
+    backfaceVisibility: 'hidden',
+    borderRadius: 4
+  },
+  back: {
+    position: 'absolute',
+    top: 0,
   }
 })
 
