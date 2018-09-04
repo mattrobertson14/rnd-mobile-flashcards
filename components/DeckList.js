@@ -2,94 +2,41 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import List from './List';
 import { AppLoading } from 'expo'
-
-const fakeDB = {
-  React: {
-    title: 'React',
-    questions: [
-      {
-        question: 'What is React?',
-        answer: 'A library for managing user interfaces'
-      },
-      {
-        question: 'Where do you make Ajax requests in React?',
-        answer: 'The componentDidMount lifecycle event'
-      }
-    ]
-  },
-  JavaScript: {
-    title: 'JavaScript',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  },
-  JavaScript2: {
-    title: 'JavaScript2',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  },
-  JavaScript3: {
-    title: 'JavaScript3',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  },
-  JavaScript4: {
-    title: 'JavaScript4',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  },
-  JavaScript5: {
-    title: 'JavaScript5',
-    questions: [
-      {
-        question: 'What is a closure?',
-        answer: 'The combination of a function and the lexical environment within which that function was declared.'
-      }
-    ]
-  },
-}
+import { connect } from 'react-redux'
+import { receiveDecks as receiveDecksAction } from '../actions'
+import { getDecks } from '../utils/api'
 
 class DeckList extends Component {
   constructor(props){
     super(props)
 
     this.state = {
-      decks : {},
       loading: true
     }
   }
 
   componentDidMount(){
-    this.setState({decks : fakeDB, loading: false})
+    getDecks().then(res => {
+      let data = JSON.parse(res)
+      this.props.receiveDecks(data)
+      this.setState({ loading : false })
+    })
   }
 
   render() {
-    let { decks, loading } = this.state
+    let { loading } = this.state
+    let {decks} = this.props
+    let decksArr = Object.values(decks)
 
     return (
       <View style={styles.container}>
         <Text
           style={styles.title}
         >
-          Current Decks
+          {decksArr.length > 0? 'Current Decks' : 'You Have No Decks'}
         </Text>
         {!loading?
-          <List items={decks} navigation={this.props.navigation} />
+          <List items={decksArr} navigation={this.props.navigation} />
         :
           <AppLoading />
         }
@@ -116,4 +63,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DeckList
+const mapDispatchToProps = dispatch => ({
+  receiveDecks : (decks) => dispatch(receiveDecksAction(decks))
+});
+
+const mapStateToProps = state => ({
+  decks : state.decks
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList);

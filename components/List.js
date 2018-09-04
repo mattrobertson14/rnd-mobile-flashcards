@@ -15,7 +15,7 @@ class List extends Component {
   }
 
   navigate(item){
-    this.props.navigation.navigate('Deck', { deck : item })
+    this.props.navigation.navigate('Deck', { deckId : item.title })
   }
 
   render(){

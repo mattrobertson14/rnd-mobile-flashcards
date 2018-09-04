@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Platform, Text, View, TextInput } from 'react-native';
 import Button from './Button'
+import { connect } from 'react-redux'
+import { addDeck as addDeckAction } from '../actions'
+import { addDeck as addDeckAPI } from '../utils/api'
 
 class NewDeck extends Component {
   constructor(props){
@@ -9,6 +12,25 @@ class NewDeck extends Component {
     this.state = {
       title: ''
     }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick() {
+    let deck = {
+      title: this.state.title,
+      questions: []
+    }
+
+    if (this.props.decks[this.state.title])
+      return alert('Deck Name Already Exists')
+    if (!this.state.title.trim())
+      return alert('Title Cannot Be Empty')
+
+    addDeckAPI(deck).then(res => {
+      let data = JSON.parse(res)
+      this.props.addDeck(deck)
+      this.props.navigation.navigate('DeckList')
+    })
   }
 
   render() {
@@ -19,11 +41,11 @@ class NewDeck extends Component {
         <Text>Deck Title:</Text>
         <TextInput
           style={Platform.OS === 'ios'? [styles.input, styles.inputIOS] : styles.input}
-          onChangeText={(txt) => this.setState({ question : txt })}
+          onChangeText={(txt) => this.setState({ title : txt })}
           value={title}
           onFocus={() => this.setState({ questionFocus : true })}
         />
-        <Button style={{alignSelf: 'center'}} onPress={() => alert('will add deck')}>ADD</Button>
+        <Button style={{alignSelf: 'center'}} onPress={() => this.handleClick()}>ADD</Button>
       </View>
     );
   }
@@ -55,4 +77,12 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NewDeck
+const mapDispatchToProps = dispatch => ({
+  addDeck : (deck) => dispatch(addDeckAction(deck))
+});
+
+const mapStateToProps = state => ({
+  decks : state.decks
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeck);

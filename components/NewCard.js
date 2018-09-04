@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TextInput, Platform } from 'react-native'
 import Button from './Button'
+import { connect } from 'react-redux'
+import { addQuestion as addQuestionAction } from '../actions'
+import { addQuestion as addQuestionAPI } from '../utils/api'
 
 class NewCard extends Component {
   constructor(props){
@@ -10,12 +13,29 @@ class NewCard extends Component {
       question: '',
       answer: ''
     }
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentWillUnmount(){
     this.setState({question: '', answer: ''})
   }
 
+  handleClick(){
+    if (!this.state.question.trim() || !this.state.answer.trim())
+      return alert('Question AND Answer Must Be Filled Out')
+
+    let question = { question: this.state.question, answer: this.state.answer}
+
+    let deckTitle = this.props.navigation.state.params.deckId
+
+    addQuestionAPI(question, deckTitle).then(res => {
+      this.props.addQuestion(deckTitle, question)
+      this.props.navigation.goBack(this.props.navigation.state.params.go_back_key)
+    }).catch( err => {
+      console.log(err)
+      alert('The Question Wasn\'t able to be added')
+    })
+  }
 
   render(){
     let { question, answer } = this.state
@@ -36,7 +56,7 @@ class NewCard extends Component {
           value={answer}
           onFocus={() => this.setState({ answerFocus : true })}
         />
-        <Button style={{alignSelf: 'center'}} onPress={() => alert('will add card')}>ADD</Button>
+        <Button style={{alignSelf: 'center'}} onPress={() => this.handleClick()}>ADD</Button>
       </View>
     )
   }
@@ -68,4 +88,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default NewCard
+const mapDispatchToProps = dispatch => ({
+  addQuestion: (deckTitle, question) => dispatch(addQuestionAction(deckTitle, question))
+});
+
+const mapStateToProps = null;
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewCard);

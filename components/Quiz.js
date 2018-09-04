@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import Card from './Card'
+import { connect } from 'react-redux'
 import Button from './Button'
 
 class Quiz extends Component {
@@ -11,7 +12,7 @@ class Quiz extends Component {
       currentCard: 0,
       numCorrect: 0,
       quizDone: false,
-      deck: this.props.navigation.state.params.deck,
+      deck: props.deck,
       newCard: true
     }
 
@@ -108,5 +109,15 @@ const styles = StyleSheet.create({
   },
 })
 
+const mapDispatchToProps = dispatch => ({
 
-export default Quiz;
+});
+
+const mapStateToProps = (state, ownProps) => {
+  let deckId = ownProps.navigation.state.params.deckId
+  return {
+    deck : state.decks[deckId]
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

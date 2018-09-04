@@ -15,6 +15,7 @@ import NewDeck from './components/NewDeck'
 import Deck from './components/Deck'
 import NewCard from './components/NewCard'
 import Quiz from './components/Quiz'
+import reducer from './reducers'
 
 const MyStatusBar = () => {
   if (Platform.OS === 'ios'){
