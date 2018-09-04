@@ -12,6 +12,10 @@ class NewCard extends Component {
     }
   }
 
+  componentWillUnmount(){
+    this.setState({question: '', answer: ''})
+  }
+
 
   render(){
     let { question, answer } = this.state

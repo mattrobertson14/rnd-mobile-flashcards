@@ -17,7 +17,17 @@ class Card extends Component {
     this.flipCard = this.flipCard.bind(this)
 
     this.state = {
-      flipView: ANSWER
+      flipView: ANSWER,
+      front: this.props.question,
+      back: this.props.answer
+    }
+  }
+
+  componentDidUpdate(prevProps){
+    if (prevProps.question !== this.props.question){
+      if (this.state.flipView === QUESTION){
+        this.setState({ front : this.props.answer, back : this.props.question, flipView : ANSWER })
+      }
     }
   }
 
@@ -28,20 +38,20 @@ class Card extends Component {
         tension: 8,
         friction: 6
       }).start()
-      this.setState({ flipView: ANSWER })
+      this.setState({ flipView: ANSWER, firstView : false })
     } else {
       Animated.spring(this.animatedVal, {
         toValue: 180,
         tension: 8,
         friction: 6
       }).start()
-      this.setState({ flipView: QUESTION })
+      this.setState({ flipView: QUESTION, firstView : false })
     }
   }
 
   render(){
     const { question, answer } = this.props
-    const { flipView } = this.state
+    const { flipView, front, back } = this.state
 
     const frontAnimate = {
       transform: [
@@ -74,16 +84,16 @@ class Card extends Component {
         <View>
           <Animated.View style={[styles.card, frontAnimate]}>
             <View>
-              <Text>{question}</Text>
+              <Text>{front}</Text>
             </View>
           </Animated.View>
           <Animated.View style={[styles.card, styles.back, backAnimate]}>
             <View>
-              <Text>{answer}</Text>
+              <Text>{back}</Text>
             </View>
           </Animated.View>
         </View>
-        <Button onPress={() => this.flipCard()}>FLIP FOR {flipView}</Button>
+        <Button style={{width: 'auto'}} onPress={() => this.flipCard()}>FLIP FOR {flipView}</Button>
       </View>
     );
   }
@@ -91,7 +101,7 @@ class Card extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

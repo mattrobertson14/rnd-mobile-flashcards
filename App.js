@@ -7,6 +7,8 @@ import {
 } from 'react-navigation'
 import { FontAwesome } from '@expo/vector-icons'
 import { Constants } from 'expo'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
 import DeckList from './components/DeckList'
 import NewDeck from './components/NewDeck'
@@ -110,10 +112,12 @@ class App extends React.Component {
 
   render() {
     return (
-      <View style={{flex : 1}}>
-        <MyStatusBar />
-        <MainNavigator />
-      </View>
+      <Provider store={createStore(reducer)}>
+        <View style={{flex : 1}}>
+          <MyStatusBar />
+          <MainNavigator />
+        </View>
+      </Provider>
     );
   }
 }
