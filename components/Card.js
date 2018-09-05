@@ -27,6 +27,8 @@ class Card extends Component {
     if (prevProps.question !== this.props.question){
       if (this.state.flipView === QUESTION){
         this.setState({ front : this.props.answer, back : this.props.question, flipView : ANSWER })
+      } else {
+        this.setState({ front : this.props.question, back : this.props.answer })
       }
     }
   }

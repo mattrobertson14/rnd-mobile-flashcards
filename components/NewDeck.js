@@ -28,8 +28,10 @@ class NewDeck extends Component {
 
     addDeckAPI(deck).then(res => {
       let data = JSON.parse(res)
+      let title = this.state.title
       this.props.addDeck(deck)
-      this.props.navigation.navigate('DeckList')
+      this.setState({ title : '' })
+      this.props.navigation.navigate('Deck',{deckId: title})
     })
   }
 

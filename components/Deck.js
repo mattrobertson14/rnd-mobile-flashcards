@@ -15,6 +15,12 @@ class Deck extends Component {
     }
   }
 
+  handleClick(){
+    if (this.props.deck.questions && this.props.deck.questions.length > 0)
+      return this.props.navigation.navigate('Quiz', { deckId: this.props.deck.title })
+    alert('You have no questions to be quizzed on')
+  }
+
   render(){
     let { deck, navigation } = this.props
     return (
@@ -22,7 +28,7 @@ class Deck extends Component {
         <Text style={styles.title}>{deck.title}</Text>
         <Text style={styles.cardCount}>{deck.questions.length} {pluralize('card', deck.questions.length)}</Text>
         <Button onPress={() => navigation.navigate('NewCard', { deckId : deck.title })}>Add Card</Button>
-        <Button onPress={() => navigation.navigate('Quiz', { deckId : deck.title })}>Start Quiz</Button>
+        <Button onPress={() => this.handleClick()}>Start Quiz</Button>
       </View>
     )
   }

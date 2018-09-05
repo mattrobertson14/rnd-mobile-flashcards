@@ -13,7 +13,7 @@ class Quiz extends Component {
       numCorrect: 0,
       quizDone: false,
       deck: props.deck,
-      newCard: true
+      currentQuestion: props.deck.questions && props.deck.questions[0]
     }
 
     this.handleCorrect = this.handleCorrect.bind(this)
@@ -25,7 +25,9 @@ class Quiz extends Component {
     if (currentCard === deck.questions.length-1) {
       this.setState({ quizDone: true, numCorrect: numCorrect+1 })
     } else {
-      this.setState({ currentCard: currentCard+1, numCorrect: numCorrect+1})
+      let num = currentCard + 1
+      let num2 = numCorrect + 1
+      this.setState({ currentCard: num, numCorrect: num2, currentQuestion: deck.questions[num]})
     }
   }
 
@@ -34,16 +36,16 @@ class Quiz extends Component {
     if (currentCard === deck.questions.length-1) {
       this.setState({ quizDone: true })
     } else {
-      this.setState({ currentCard: currentCard+1 })
+      let num = currentCard + 1
+      this.setState({ currentCard: num, currentQuestion: deck.questions[num] })
     }
   }
 
   render(){
-    const { currentCard, deck, numCorrect, quizDone } = this.state
+    const { currentCard, currentQuestion, deck, numCorrect, quizDone } = this.state
     const { navigation } = this.props
 
     if (!quizDone){
-      const currentQuestion = deck.questions[currentCard]
 
       return(
         <View style={styles.quizContainer}>
@@ -51,7 +53,7 @@ class Quiz extends Component {
           <Card
             question={currentQuestion.question}
             answer={currentQuestion.answer}
-            index={currentCard+1}
+            index={currentCard}
           />
           <View style={ styles.buttonContainer }>
             <Button style={[styles.button, { backgroundColor: 'green', borderColor: 'green' }] } onPress={() => this.handleCorrect()}>CORRECT</Button>
