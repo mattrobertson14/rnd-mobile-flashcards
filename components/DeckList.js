@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 import List from './List';
+import Button from './Button';
 import { AppLoading } from 'expo'
 import { connect } from 'react-redux'
 import { receiveDecks as receiveDecksAction } from '../actions'
@@ -34,6 +35,7 @@ class DeckList extends Component {
           style={styles.title}
         >
           {decksArr.length > 0? 'Current Decks' : 'You Have No Decks'}
+          {decksArr.length === 0 && <Button onClick={()=>this.props.navigation.navigate('NewDeck')}>Add First Deck</Button>}
         </Text>
         {!loading?
           <List items={decksArr} navigation={this.props.navigation} />
