@@ -5,6 +5,7 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator
 } from 'react-navigation'
+import { setLocalNotification } from './utils/notification'
 import { FontAwesome } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { createStore } from 'redux'
@@ -110,6 +111,10 @@ const MainNavigator = createStackNavigator({
 })
 
 class App extends React.Component {
+
+  componentDidMount(){
+    setLocalNotification()
+  }
 
   render() {
     return (

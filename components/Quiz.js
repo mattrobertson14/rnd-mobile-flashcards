@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import Card from './Card'
+import { setLocalNotification, clearLocalNotification } from '../utils/notification'
 import { connect } from 'react-redux'
 import Button from './Button'
 
@@ -35,6 +36,7 @@ class Quiz extends Component {
     let {currentCard, deck} = this.state
     if (currentCard === deck.questions.length-1) {
       this.setState({ quizDone: true })
+      clearLocalNotification().then(setLocalNotification)
     } else {
       let num = currentCard + 1
       this.setState({ currentCard: num, currentQuestion: deck.questions[num] })
