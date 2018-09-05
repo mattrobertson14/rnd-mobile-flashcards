@@ -35,8 +35,8 @@ class DeckList extends Component {
           style={styles.title}
         >
           {decksArr.length > 0? 'Current Decks' : 'You Have No Decks'}
-          {decksArr.length === 0 && <Button onClick={()=>this.props.navigation.navigate('NewDeck')}>Add First Deck</Button>}
         </Text>
+        {decksArr.length === 0 && <Button style={{alignSelf: 'center'}} onPress={()=>this.props.navigation.navigate('NewDeck')}>Add First Deck</Button>}
         {!loading?
           <List items={decksArr} navigation={this.props.navigation} />
         :
