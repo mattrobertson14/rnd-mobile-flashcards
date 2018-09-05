@@ -14,7 +14,6 @@ class Quiz extends Component {
       numCorrect: 0,
       quizDone: false,
       deck: props.deck,
-      currentQuestion: props.deck.questions && props.deck.questions[0]
     }
 
     this.handleCorrect = this.handleCorrect.bind(this)
@@ -28,7 +27,7 @@ class Quiz extends Component {
     } else {
       let num = currentCard + 1
       let num2 = numCorrect + 1
-      this.setState({ currentCard: num, numCorrect: num2, currentQuestion: deck.questions[num]})
+      this.setState({ currentCard: num, numCorrect: num2 })
     }
   }
 
@@ -39,7 +38,7 @@ class Quiz extends Component {
       clearLocalNotification().then(setLocalNotification)
     } else {
       let num = currentCard + 1
-      this.setState({ currentCard: num, currentQuestion: deck.questions[num] })
+      this.setState({ currentCard: num  })
     }
   }
 
@@ -48,6 +47,7 @@ class Quiz extends Component {
     const { navigation } = this.props
 
     if (!quizDone){
+      const currentQuestion = deck.questions[currentCard]
 
       return(
         <View style={styles.quizContainer}>
@@ -70,7 +70,7 @@ class Quiz extends Component {
         <Text style={{ fontSize: 20 }}>Quiz Done! You scored a</Text>
         <Text style={{ fontSize: 90, marginBottom: 30,marginTop: 30, fontWeight: 'bold'}}>{Math.ceil(numCorrect/deck.questions.length*100)}%</Text>
         <Text style={{ fontSize: 16 }}>{numCorrect} out of {deck.questions.length} questions answered correctly</Text>
-        <Button onPress={() => this.setState({ quizDone: false, currentCard: 0, numCorrect: 0})}>RETAKE QUIZ</Button>
+        <Button onPress={() => this.setState({ quizDone: false, currentCard: 0, numCorrect: 0 })}>RETAKE QUIZ</Button>
         <Button onPress={() => navigation.goBack()}>BACK TO DECK</Button>
       </View>
     );
